@@ -56,7 +56,7 @@ class OrderController extends Controller
         ]);
 
         if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
-            request()->session()->flash('error','Cart is Empty!');
+            toast('Cart is Empty!','error');
             return back();
         }
 
@@ -91,7 +91,7 @@ class OrderController extends Controller
 
             $params = [
                 'transaction_details' => [
-                    'order_id' => $order->id,
+                    'order_id' => $order_data['order_number'],
                     'gross_amount' => $order_data['total_amount'],
                 ],
                 'customer_details' => [
@@ -104,7 +104,8 @@ class OrderController extends Controller
             $snapToken = Snap::getSnapToken($params);
             session()->forget('cart');
             session()->forget('coupon');
-            request()->session()->flash('success','Your product successfully placed in order');
+            toast('Your product successfully placed in order','success');
+            Log::info('Order ID yang dikirim ke Midtrans: ' . $order->id);
             return view('frontend.pages.checkout_akhir', compact('snapToken', 'order'));
     }
 
@@ -137,7 +138,7 @@ class OrderController extends Controller
             // Validasi status transaksi
             if ($request->transaction_status === 'capture' || $request->transaction_status === 'settlement') {
                 // Cari order berdasarkan ID
-                $order = Order::where('id', $orderId)->first();
+                $order = Order::where('order_number', $orderId)->first();
 
                 // Jika order ditemukan, update status pembayaran
                 if ($order) {
@@ -160,7 +161,7 @@ class OrderController extends Controller
     public function show(Request $request, $id)
     {
         $order=Order::find($id);
-        
+
         // return $order;
         return view('backend.order.show')->with('order',$order);
     }
@@ -202,10 +203,10 @@ class OrderController extends Controller
         }
         $status=$order->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Successfully updated order');
+            toast('Successfully updated order','success');
         }
         else{
-            request()->session()->flash('error','Error while updating order');
+            toast('Error while updating order','error');
         }
         return redirect()->route('order.index');
     }
@@ -222,15 +223,15 @@ class OrderController extends Controller
         if($order){
             $status=$order->delete();
             if($status){
-                request()->session()->flash('success','Order Successfully deleted');
+                toast('Order Successfully deleted','success');
             }
             else{
-                request()->session()->flash('error','Order can not deleted');
+                toast('Order can not deleted','error');
             }
             return redirect()->route('order.index');
         }
         else{
-            request()->session()->flash('error','Order can not found');
+            toast('Order can not found','error');
             return redirect()->back();
         }
     }
@@ -244,28 +245,28 @@ class OrderController extends Controller
         $order=Order::where('user_id',auth()->user()->id)->where('order_number',$request->order_number)->first();
         if($order){
             if($order->status=="new"){
-            request()->session()->flash('success','Your order has been placed. please wait.');
+            toast('Your order has been placed. please wait.','success');
             return redirect()->route('home');
 
             }
             elseif($order->status=="process"){
-                request()->session()->flash('success','Your order is under processing please wait.');
+                toast('Your order is under processing please wait.','success');
                 return redirect()->route('home');
 
             }
             elseif($order->status=="delivered"){
-                request()->session()->flash('success','Your order is successfully delivered.');
+                toast('Your order is successfully delivered.','success');
                 return redirect()->route('home');
 
             }
             else{
-                request()->session()->flash('error','Your order canceled. please try again');
+                toast('Your order canceled. please try again','error');
                 return redirect()->route('home');
 
             }
         }
         else{
-            request()->session()->flash('error','Invalid order numer please try again');
+            toast('Invalid order numer please try again','error');
             return back();
         }
     }

@@ -40,10 +40,10 @@ class AdminController extends Controller
         $data=$request->all();
         $status=$user->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Successfully updated your profile');
+            toast('Successfully updated your profile','success');
         }
         else{
-            request()->session()->flash('error','Please try again!');
+            toast('Please try again!','error');
         }
         return redirect()->back();
     }
@@ -70,10 +70,10 @@ class AdminController extends Controller
         // return $settings;
         $status=$settings->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Setting successfully updated');
+            toast('Setting successfully updated','success');
         }
         else{
-            request()->session()->flash('error','Please try again');
+            toast('Please try again','error');
         }
         return redirect()->route('admin');
     }
@@ -91,7 +91,7 @@ class AdminController extends Controller
 
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
 
-        return redirect()->route('admin')->with('success','Password successfully changed');
+        return redirect()->route('admin')->with('Password successfully changed','success');
     }
 
     // Pie chart
@@ -126,22 +126,22 @@ class AdminController extends Controller
             //Regenerate the storage link folder
             try{
                 Artisan::call('storage:link');
-                request()->session()->flash('success', 'Successfully storage linked.');
+                toast( 'Successfully storage linked.','success');
                 return redirect()->back();
             }
             catch(\Exception $exception){
-                request()->session()->flash('error', $exception->getMessage());
+                toast( $exception->getMessage(),'error');
                 return redirect()->back();
             }
         }
         else{
             try{
                 Artisan::call('storage:link');
-                request()->session()->flash('success', 'Successfully storage linked.');
+                toast( 'Successfully storage linked.','success');
                 return redirect()->back();
             }
             catch(\Exception $exception){
-                request()->session()->flash('error', $exception->getMessage());
+                toast( $exception->getMessage(),'error');
                 return redirect()->back();
             }
         }

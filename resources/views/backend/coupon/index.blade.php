@@ -9,19 +9,19 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Coupon List</h6>
-      <a href="{{route('coupon.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Coupon</a>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Daftar Kupon</h6>
+      <a href="{{route('coupon.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Tambah Kupon</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
         @if(count($coupons)>0)
         <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
           <thead>
-            <tr>
+            <tr class="text-center">
               <th>S.N.</th>
-              <th>Coupon Code</th>
-              <th>Type</th>
-              <th>Value</th>
+              <th>Kode Kupon</th>
+              <th>Tipe</th>
+              <th>Nilai</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -29,9 +29,9 @@
           <tfoot>
             <tr>
                 <th>S.N.</th>
-                <th>Coupon Code</th>
-                <th>Type</th>
-                <th>Value</th>
+                <th>Kode Kupon</th>
+                <th>Tipe</th>
+                <th>Nilai</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -39,9 +39,9 @@
           <tbody>
             @foreach($coupons as $coupon)
                 <tr>
-                    <td>{{$loop->iteration}}</td>
+                    <td class="text-center">{{$loop->iteration}}</td>
                     <td>{{$coupon->code}}</td>
-                    <td>
+                    <td class="text-center">
                         @if($coupon->type=='fixed')
                             <span class="badge badge-primary">{{$coupon->type}}</span>
                         @else
@@ -50,18 +50,18 @@
                     </td>
                     <td>
                         @if($coupon->type=='fixed')
-                            ${{number_format($coupon->value,2)}}
+                            Rp{{number_format($coupon->value,2)}}
                         @else
                             {{$coupon->value}}%
                         @endif</td>
-                    <td>
+                    <td class="text-center">
                         @if($coupon->status=='active')
                             <span class="badge badge-success">{{$coupon->status}}</span>
                         @else
                             <span class="badge badge-warning">{{$coupon->status}}</span>
                         @endif
                     </td>
-                    <td>
+                    <td class="text-center">
                         <a href="{{route('coupon.edit',$coupon->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <form method="POST" action="{{route('coupon.destroy',[$coupon->id])}}">
                           @csrf
@@ -95,7 +95,7 @@
         </table>
         <span style="float:right">{{$coupons->links()}}</span>
         @else
-          <h6 class="text-center">No Coupon found!!! Please create coupon</h6>
+          <h6 class="text-center">Tidak ada kupon!!! Tolong buat kupon</h6>
         @endif
       </div>
     </div>
@@ -106,9 +106,6 @@
   <link href="{{asset('backend/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
   <style>
-      div.dataTables_wrapper div.dataTables_paginate{
-          display: none;
-      }
       .zoom {
         transition: transform .2s; /* Animation */
       }
@@ -158,8 +155,8 @@
               // alert(dataID);
               e.preventDefault();
               swal({
-                    title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this data!",
+                    title: "Apakah Anda Yakin?",
+                    text: "Setelah Menghapus, Anda tidak dapat memulihkan data ini!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -168,7 +165,7 @@
                     if (willDelete) {
                        form.submit();
                     } else {
-                        swal("Your data is safe!");
+                        swal("Data Anda di amankan!");
                     }
                 });
           })

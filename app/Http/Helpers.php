@@ -1,24 +1,25 @@
 <?php
-use App\Models\Message;
-use App\Models\Category;
-use App\Models\PostTag;
-use App\Models\PostCategory;
-use App\Models\Order;
-use App\Models\Wishlist;
-use App\Models\Shipping;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Message;
+use App\Models\PostTag;
+use App\Models\Category;
+use App\Models\Shipping;
+use App\Models\Wishlist;
+use App\Models\PostCategory;
+use Illuminate\Support\Facades\Auth;
 // use Auth;
 class Helper{
     public static function messageList()
     {
         return Message::whereNull('read_at')->orderBy('created_at', 'desc')->get();
-    } 
+    }
     public static function getAllCategory(){
         $category=new Category();
         $menu=$category->getAllParentWithChild();
         return $menu;
-    } 
-    
+    }
+
     public static function getHeaderCategory(){
         $category = new Category();
         // dd($category);
@@ -26,16 +27,14 @@ class Helper{
 
         if($menu){
             ?>
-            
-            <li>
-            <a href="javascript:void(0);">Category<i class="ti-angle-down"></i></a>
-                <ul class="dropdown border-0 shadow">
-                <?php
+         <li class="dropdown"><a href="javascript:void(0);">Kategori<i class="ti-angle-down"></i></a>
+                  <ul>
+                  <?php
                     foreach($menu as $cat_info){
                         if($cat_info->child_cat->count()>0){
                             ?>
-                            <li><a href="<?php echo route('product-cat',$cat_info->slug); ?>"><?php echo $cat_info->title; ?></a>
-                                <ul class="dropdown sub-dropdown border-0 shadow">
+                    <li><a href="<?php echo route('product-cat',$cat_info->slug); ?>"><?php echo $cat_info->title; ?></a>
+                    <ul class="dropdown sub-dropdown border-0 shadow">
                                     <?php
                                     foreach($cat_info->child_cat as $sub_menu){
                                         ?>
@@ -56,6 +55,7 @@ class Helper{
                     ?>
                 </ul>
             </li>
+
         <?php
         }
     }
@@ -82,7 +82,7 @@ class Helper{
     }
     // Cart Count
     public static function cartCount($user_id=''){
-       
+
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
             return Cart::where('user_id',$user_id)->where('order_id',null)->sum('quantity');
@@ -117,7 +117,7 @@ class Helper{
     }
     // Wishlist Count
     public static function wishlistCount($user_id=''){
-       
+
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
             return Wishlist::where('user_id',$user_id)->where('cart_id',null)->sum('quantity');

@@ -53,10 +53,10 @@ class BannerController extends Controller
         // return $slug;
         $status=Banner::create($data);
         if($status){
-            request()->session()->flash('success','Banner successfully added');
+           toast('Banner successfully added','success');
         }
         else{
-            request()->session()->flash('error','Error occurred while adding banner');
+           toast('Error occurred while adding banner','error');
         }
         return redirect()->route('banner.index');
     }
@@ -110,10 +110,10 @@ class BannerController extends Controller
         // return $slug;
         $status=$banner->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Banner successfully updated');
+           toast('Banner successfully updated','success');
         }
         else{
-            request()->session()->flash('error','Error occurred while updating banner');
+           toast('Error occurred while updating banner','error');
         }
         return redirect()->route('banner.index');
     }
@@ -129,10 +129,10 @@ class BannerController extends Controller
         $banner=Banner::findOrFail($id);
         $status=$banner->delete();
         if($status){
-            request()->session()->flash('success','Banner successfully deleted');
+           toast('Banner successfully deleted','success');
         }
         else{
-            request()->session()->flash('error','Error occurred while deleting banner');
+           toast('Error occurred while deleting banner','error');
         }
         return redirect()->route('banner.index');
     }

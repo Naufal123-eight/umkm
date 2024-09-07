@@ -21,16 +21,16 @@ class NotificationController extends Controller
         if($notification){
             $status=$notification->delete();
             if($status){
-                request()->session()->flash('success','Notification successfully deleted');
+                toast('Notification successfully deleted','success');
                 return back();
             }
             else{
-                request()->session()->flash('error','Error please try again');
+                toast('Error please try again','error');
                 return back();
             }
         }
         else{
-            request()->session()->flash('error','Notification not found');
+            toast('Notification not found','error');
             return back();
         }
     }

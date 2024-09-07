@@ -45,10 +45,10 @@ class HomeController extends Controller
         $data=$request->all();
         $status=$user->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Successfully updated your profile');
+            toast('Successfully updated your profile','success');
         }
         else{
-            request()->session()->flash('error','Please try again!');
+            toast('Please try again!','error');
         }
         return redirect()->back();
     }
@@ -63,21 +63,21 @@ class HomeController extends Controller
         $order=Order::find($id);
         if($order){
            if($order->status=="process" || $order->status=='delivered' || $order->status=='cancel'){
-                return redirect()->back()->with('error','You can not delete this order now');
+                return redirect()->back()->with('You can not delete this order now','error');
            }
            else{
                 $status=$order->delete();
                 if($status){
-                    request()->session()->flash('success','Order Successfully deleted');
+                    toast('Order Successfully deleted','success');
                 }
                 else{
-                    request()->session()->flash('error','Order can not deleted');
+                    toast('Order can not deleted','error');
                 }
                 return redirect()->route('user.order.index');
            }
         }
         else{
-            request()->session()->flash('error','Order can not found');
+            toast('Order can not found','error');
             return redirect()->back();
         }
     }
@@ -115,14 +115,14 @@ class HomeController extends Controller
             $data=$request->all();
             $status=$review->fill($data)->update();
             if($status){
-                request()->session()->flash('success','Review Successfully updated');
+                toast('Review Successfully updated','success');
             }
             else{
-                request()->session()->flash('error','Something went wrong! Please try again!!');
+                toast('Something went wrong! Please try again!!','error');
             }
         }
         else{
-            request()->session()->flash('error','Review not found!!');
+            toast('Review not found!!','error');
         }
 
         return redirect()->route('user.productreview.index');
@@ -139,10 +139,10 @@ class HomeController extends Controller
         $review=ProductReview::find($id);
         $status=$review->delete();
         if($status){
-            request()->session()->flash('success','Successfully deleted review');
+            toast('Successfully deleted review','success');
         }
         else{
-            request()->session()->flash('error','Something went wrong! Try again');
+            toast('Something went wrong! Try again','error');
         }
         return redirect()->route('user.productreview.index');
     }
@@ -157,15 +157,15 @@ class HomeController extends Controller
         if($comment){
             $status=$comment->delete();
             if($status){
-                request()->session()->flash('success','Post Comment successfully deleted');
+                toast('Post Comment successfully deleted','success');
             }
             else{
-                request()->session()->flash('error','Error occurred please try again');
+                toast('Error occurred please try again','error');
             }
             return back();
         }
         else{
-            request()->session()->flash('error','Post Comment not found');
+            toast('Post Comment not found','error');
             return redirect()->back();
         }
     }
@@ -176,7 +176,7 @@ class HomeController extends Controller
             return view('user.comment.edit')->with('comment',$comments);
         }
         else{
-            request()->session()->flash('error','Comment not found');
+            toast('Comment not found','error');
             return redirect()->back();
         }
     }
@@ -196,15 +196,15 @@ class HomeController extends Controller
             // return $data;
             $status=$comment->fill($data)->update();
             if($status){
-                request()->session()->flash('success','Comment successfully updated');
+                toast('Comment successfully updated','success');
             }
             else{
-                request()->session()->flash('error','Something went wrong! Please try again!!');
+                toast('Something went wrong! Please try again!!','error');
             }
             return redirect()->route('user.post-comment.index');
         }
         else{
-            request()->session()->flash('error','Comment not found');
+            toast('Comment not found','error');
             return redirect()->back();
         }
 
@@ -220,11 +220,11 @@ class HomeController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-   
-        return redirect()->route('user')->with('success','Password successfully changed');
+
+        return redirect()->route('user')->with('Password successfully changed','success');
     }
 
-    
+
 }

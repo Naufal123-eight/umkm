@@ -7,22 +7,22 @@
            @include('backend.layouts.notification')
         </div>
     </div>
-  <h5 class="card-header">Notifications</h5>
+  <h5 class="card-header">Notifikasi</h5>
   <div class="card-body">
     @if(count(Auth::user()->Notifications)>0)
     <table class="table  table-hover admin-table" id="notification-dataTable">
       <thead>
-        <tr>
+        <tr class="text-center">
           <th scope="col">#</th>
-          <th scope="col">Time</th>
-          <th scope="col">Title</th>
-          <th scope="col">Action</th>
+          <th scope="col">Waktu/Tanggal</th>
+          <th scope="col">Judul</th>
+          <th scope="col">Aksi</th>
         </tr>
       </thead>
       <tbody>
         @foreach ( Auth::user()->Notifications as $notification)
 
-        <tr class="@if($notification->unread()) bg-light border-left-light @else border-left-success @endif">
+        <tr class="@if($notification->unread()) bg-light border-left-light @else border-left-success @endif text-center">
           <td scope="row">{{$loop->index +1}}</td>
           <td>{{$notification->created_at->format('F d, Y h:i A')}}</td>
           <td>{{$notification->data['title']}}</td>
@@ -87,19 +87,19 @@
             // alert(dataID);
             e.preventDefault();
             swal({
-                  title: "Are you sure?",
-                  text: "Once deleted, you will not be able to recover this data!",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-              })
-              .then((willDelete) => {
-                  if (willDelete) {
-                    form.submit();
-                  } else {
-                      swal("Your data is safe!");
-                  }
-              });
+                    title: "Apakah Anda Yakin?",
+                    text: "Setelah Menghapus, Anda tidak dapat memulihkan data ini!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                       form.submit();
+                    } else {
+                        swal("Data Anda di amankan!");
+                    }
+                });
         })
     })
   </script>

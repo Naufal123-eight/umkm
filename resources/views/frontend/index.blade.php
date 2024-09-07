@@ -1,9 +1,9 @@
 @extends('frontend.layouts.master')
-@section('title','E-SHOP || HOME PAGE')
+@section('title','UMKM || BERANDA')
 @section('main-content')
 <!-- Slider Area -->
 @if(count($banners)>0)
-    <section id="Gslider" class="carousel slide" data-ride="carousel">
+    <section id="Gslider" class="carousel slide mt-5" data-ride="carousel">
         <ol class="carousel-indicators">
             @foreach($banners as $key=>$banner)
         <li data-target="#Gslider" data-slide-to="{{$key}}" class="{{(($key==0)? 'active' : '')}}"></li>
@@ -17,7 +17,7 @@
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h1 class="wow fadeInDown">{{$banner->title}}</h1>
                         <p>{!! html_entity_decode($banner->description) !!}</p>
-                        <a class="btn btn-lg ws-btn wow fadeInUpBig" href="{{route('product-grids')}}" role="button">Belanja Sekarang<i class="far fa-arrow-alt-circle-right"></i></i></a>
+                        <a class="btn btn-lg ws-btn wow fadeInUpBig" href="{{route('product-grids')}}" role="button">Belanja Sekarang</i></i></a>
                     </div>
                 </div>
             @endforeach
@@ -397,9 +397,6 @@
                                                 <a href="{{route('add-to-wishlist',$product->slug)}}" class="btn min"><i class="ti-heart"></i></a>
                                             </div>
                                         </form>
-                                        <div class="default-social">
-                                        <!-- ShareThis BEGIN --><div class="sharethis-inline-share-buttons"></div><!-- ShareThis END -->
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -413,8 +410,6 @@
 @endsection
 
 @push('styles')
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
     <style>
         /* Banner Sliding */
         #Gslider .carousel-inner {
@@ -425,20 +420,17 @@
         #Gslider .carousel-inner{
         height: 550px;
         }
-        #Gslider .carousel-inner img{
-            width: 100% !important;
-            opacity: .8;
-        }
 
         #Gslider .carousel-inner .carousel-caption {
-        bottom: 60%;
+        bottom: 30%;
         }
 
         #Gslider .carousel-inner .carousel-caption h1 {
         font-size: 50px;
         font-weight: bold;
         line-height: 100%;
-        color: #F7941D;
+        color: #ffffff;
+        text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
         }
 
         #Gslider .carousel-inner .carousel-caption p {
@@ -450,6 +442,24 @@
         #Gslider .carousel-indicators {
         bottom: 70px;
         }
+        #Gslider .carousel-inner .carousel-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Mengatur overlay menjadi setengah transparan */
+            z-index: 1;
+        }
+
+#Gslider .carousel-inner .carousel-item img {
+    width: 100% !important;
+    height: auto;
+    opacity: 1; /* Hilangkan transparansi asli */
+    z-index: 0; /* Pastikan gambar berada di belakang overlay */
+    position: relative; /* Posisi relatif untuk z-index */
+}
     </style>
 @endpush
 

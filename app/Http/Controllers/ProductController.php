@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=Product::getAllProduct();
+        $products = Product::all(); // Pastikan tidak ada pembatasan jumlah data di sini
         // return $products;
         return view('backend.product.index')->with('products',$products);
     }
@@ -85,10 +85,10 @@ class ProductController extends Controller
         // return $data;
         $status=Product::create($data);
         if($status){
-            request()->session()->flash('success','Product Successfully added');
+            toast('Product Successfully added','success');
         }
         else{
-            request()->session()->flash('error','Please try again!!');
+            toast('Please try again!!','error');
         }
         return redirect()->route('product.index');
 
@@ -162,10 +162,10 @@ class ProductController extends Controller
         // return $data;
         $status=$product->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Product Successfully updated');
+            toast('Product Successfully updated','success');
         }
         else{
-            request()->session()->flash('error','Please try again!!');
+            toast('Please try again!!','error');
         }
         return redirect()->route('product.index');
     }
@@ -182,10 +182,10 @@ class ProductController extends Controller
         $status=$product->delete();
 
         if($status){
-            request()->session()->flash('success','Product successfully deleted');
+            toast('Product successfully deleted','success');
         }
         else{
-            request()->session()->flash('error','Error while deleting product');
+            toast('Error while deleting product','error');
         }
         return redirect()->route('product.index');
     }

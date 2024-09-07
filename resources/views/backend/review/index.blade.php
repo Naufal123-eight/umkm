@@ -9,7 +9,7 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Review Lists</h6>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Daftar Ulasan</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -18,25 +18,25 @@
           <thead>
             <tr>
               <th>S.N.</th>
-              <th>Review By</th>
-              <th>Product Title</th>
-              <th>Review</th>
-              <th>Rate</th>
-              <th>Date</th>
+              <th>Ulasan Oleh</th>
+              <th>Nama Produk</th>
+              <th>Ulasan</th>
+              <th>Rating</th>
+              <th>Tanggal</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <th>S.N.</th>
-              <th>Review By</th>
-              <th>Product Title</th>
-              <th>Review</th>
-              <th>Rate</th>
-              <th>Date</th>
+              <th>Ulasan Oleh</th>
+              <th>Nama Produk</th>
+              <th>Ulasan</th>
+              <th>Rating</th>
+              <th>Tanggal</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Aksi</th>
               </tr>
           </tfoot>
           <tbody>
@@ -47,7 +47,7 @@
                     <td>{{$review->product->title}}</td>
                     <td>{{$review->review}}</td>
                     <td>
-                     <ul style="list-style:none">
+                     <ul style="list-style:none;" class="d-flex mr-4">
                           @for($i=1; $i<=5;$i++)
                           @if($review->rate >=$i)
                             <li style="float:left;color:#F7941D;"><i class="fa fa-star"></i></li>
@@ -66,7 +66,6 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('review.edit',$review->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <form method="POST" action="{{route('review.destroy',[$review->id])}}">
                           @csrf
                           @method('delete')
@@ -79,7 +78,7 @@
         </table>
         <span style="float:right">{{$reviews->links()}}</span>
         @else
-          <h6 class="text-center">No reviews found!!!</h6>
+          <h6 class="text-center">Tidak Ada Ulasan!!!</h6>
         @endif
       </div>
     </div>
@@ -135,8 +134,8 @@
               // alert(dataID);
               e.preventDefault();
               swal({
-                    title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this data!",
+                    title: "Apakah Anda Yakin?",
+                    text: "Setelah Menghapus, Anda tidak dapat memulihkan data ini!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -145,7 +144,7 @@
                     if (willDelete) {
                        form.submit();
                     } else {
-                        swal("Your data is safe!");
+                        swal("Data Anda di amankan!");
                     }
                 });
           })

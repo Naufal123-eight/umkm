@@ -49,10 +49,10 @@ class BrandController extends Controller
         // return $data;
         $status=Brand::create($data);
         if($status){
-            request()->session()->flash('success','Brand successfully created');
+            toast('success','Brand successfully created');
         }
         else{
-            request()->session()->flash('error','Error, Please try again');
+            toast('error','Error, Please try again');
         }
         return redirect()->route('brand.index');
     }
@@ -78,7 +78,7 @@ class BrandController extends Controller
     {
         $brand=Brand::find($id);
         if(!$brand){
-            request()->session()->flash('error','Brand not found');
+            toast('error','Brand not found');
         }
         return view('backend.brand.edit')->with('brand',$brand);
     }
@@ -98,13 +98,13 @@ class BrandController extends Controller
             'title'=>'string|required',
         ]);
         $data=$request->all();
-       
+
         $status=$brand->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Brand successfully updated');
+            toast('success','Brand successfully updated');
         }
         else{
-            request()->session()->flash('error','Error, Please try again');
+            toast('error','Error, Please try again');
         }
         return redirect()->route('brand.index');
     }
@@ -121,15 +121,15 @@ class BrandController extends Controller
         if($brand){
             $status=$brand->delete();
             if($status){
-                request()->session()->flash('success','Brand successfully deleted');
+                toast('success','Brand successfully deleted');
             }
             else{
-                request()->session()->flash('error','Error, Please try again');
+                toast('error','Error, Please try again');
             }
             return redirect()->route('brand.index');
         }
         else{
-            request()->session()->flash('error','Brand not found');
+            toast('error','Brand not found');
             return redirect()->back();
         }
     }

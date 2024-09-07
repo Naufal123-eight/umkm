@@ -15,9 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category=Category::getAllCategory();
-        // return $category;
-        return view('backend.category.index')->with('categories',$category);
+        $categories = Category::paginate(10); // Gantilah 10 dengan jumlah item per halaman yang diinginkan
+        return view('backend.category.index')->with('categories', $categories);
     }
 
     /**
@@ -56,13 +55,13 @@ class CategoryController extends Controller
         }
         $data['slug']=$slug;
         $data['is_parent']=$request->input('is_parent',0);
-        // return $data;   
+        // return $data;
         $status=Category::create($data);
         if($status){
-            request()->session()->flash('success','Category successfully added');
+            toast('Category successfully added','success');
         }
         else{
-            request()->session()->flash('error','Error occurred, Please try again!');
+            toast('Error occurred, Please try again!','error');
         }
         return redirect()->route('category.index');
 
@@ -117,10 +116,10 @@ class CategoryController extends Controller
         // return $data;
         $status=$category->fill($data)->save();
         if($status){
-            request()->session()->flash('success','Category successfully updated');
+            toast('Category successfully updated','success');
         }
         else{
-            request()->session()->flash('error','Error occurred, Please try again!');
+            toast('Error occurred, Please try again!','error');
         }
         return redirect()->route('category.index');
     }
@@ -137,15 +136,15 @@ class CategoryController extends Controller
         $child_cat_id=Category::where('parent_id',$id)->pluck('id');
         // return $child_cat_id;
         $status=$category->delete();
-        
+
         if($status){
             if(count($child_cat_id)>0){
                 Category::shiftChild($child_cat_id);
             }
-            request()->session()->flash('success','Category successfully deleted');
+            toast('Category successfully deleted','success');
         }
         else{
-            request()->session()->flash('error','Error while deleting category');
+            toast('Error while deleting category','error');
         }
         return redirect()->route('category.index');
     }

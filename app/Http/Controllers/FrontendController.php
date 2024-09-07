@@ -50,8 +50,9 @@ class FrontendController extends Controller
 
     public function productDetail($slug){
         $product_detail= Product::getProductBySlug($slug);
+        $products=Product::query();
         // dd($product_detail);
-        return view('frontend.pages.product_detail')->with('product_detail',$product_detail);
+        return view('frontend.pages.product_detail')->with('product_detail',$product_detail)->with('products',$products);
     }
 
     public function productGrids(){
@@ -64,12 +65,6 @@ class FrontendController extends Controller
             // dd($cat_ids);
             $products->whereIn('cat_id',$cat_ids);
             // return $products;
-        }
-        if(!empty($_GET['brand'])){
-            $slugs=explode(',',$_GET['brand']);
-            $brand_ids=Brand::select('id')->whereIn('slug',$slugs)->pluck('id')->toArray();
-            return $brand_ids;
-            $products->whereIn('brand_id',$brand_ids);
         }
         if(!empty($_GET['sortBy'])){
             if($_GET['sortBy']=='title'){
@@ -353,11 +348,11 @@ class FrontendController extends Controller
         $data= $request->all();
         if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
             Session::put('user',$data['email']);
-            request()->session()->flash('success','Successfully login');
+            toast('Successfully login','success');
             return redirect()->route('home');
         }
         else{
-            request()->session()->flash('error','Invalid email and password pleas try again!');
+            toast('Invalid email and password pleas try again!','error');
             return redirect()->back();
         }
     }
@@ -365,7 +360,7 @@ class FrontendController extends Controller
     public function logout(){
         Session::forget('user');
         Auth::logout();
-        request()->session()->flash('success','Logout successfully');
+        toast('Logout successfully','success');
         return back();
     }
 
@@ -384,11 +379,11 @@ class FrontendController extends Controller
         $check=$this->create($data);
         Session::put('user',$data['email']);
         if($check){
-            request()->session()->flash('success','Successfully registered');
+            toast('Successfully registered','success');
             return redirect()->route('home');
         }
         else{
-            request()->session()->flash('error','Please try again!');
+            toast('Please try again!','error');
             return back();
         }
     }
@@ -404,23 +399,4 @@ class FrontendController extends Controller
     public function showResetForm(){
         return view('auth.passwords.old-reset');
     }
-
-    public function subscribe(Request $request){
-        if(! Newsletter::isSubscribed($request->email)){
-                Newsletter::subscribePending($request->email);
-                if(Newsletter::lastActionSucceeded()){
-                    request()->session()->flash('success','Subscribed! Please check your email');
-                    return redirect()->route('home');
-                }
-                else{
-                    Newsletter::getLastError();
-                    return back()->with('error','Something went wrong! please try again');
-                }
-            }
-            else{
-                request()->session()->flash('error','Already Subscribed');
-                return back();
-            }
-    }
-
 }

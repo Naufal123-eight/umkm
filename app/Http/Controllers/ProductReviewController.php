@@ -18,7 +18,7 @@ class ProductReviewController extends Controller
     public function index()
     {
         $reviews=ProductReview::getAllReview();
-        
+
         return view('backend.review.index')->with('reviews',$reviews);
     }
 
@@ -29,7 +29,7 @@ class ProductReviewController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -61,10 +61,10 @@ class ProductReviewController extends Controller
         ];
         Notification::send($user,new StatusNotification($details));
         if($status){
-            request()->session()->flash('success','Thank you for your feedback');
+            toast('Thank you for your feedback','success');
         }
         else{
-            request()->session()->flash('error','Something went wrong! Please try again!!');
+            toast('Something went wrong! Please try again!!','error');
         }
         return redirect()->back();
     }
@@ -119,14 +119,14 @@ class ProductReviewController extends Controller
             // ];
             // Notification::send($user,new StatusNotification($details));
             if($status){
-                request()->session()->flash('success','Review Successfully updated');
+                toast('Review Successfully updated','success');
             }
             else{
-                request()->session()->flash('error','Something went wrong! Please try again!!');
+                toast('Something went wrong! Please try again!!','error');
             }
         }
         else{
-            request()->session()->flash('error','Review not found!!');
+            toast('Review not found!!','error');
         }
 
         return redirect()->route('review.index');
@@ -143,10 +143,10 @@ class ProductReviewController extends Controller
         $review=ProductReview::find($id);
         $status=$review->delete();
         if($status){
-            request()->session()->flash('success','Successfully deleted review');
+            toast('Successfully deleted review','success');
         }
         else{
-            request()->session()->flash('error','Something went wrong! Try again');
+            toast('Something went wrong! Try again','error');
         }
         return redirect()->route('review.index');
     }
